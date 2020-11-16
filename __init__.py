@@ -8,6 +8,7 @@ import time
 from sentiment_analysis_spanish import sentiment_analysis
 import redis
 import json
+from keywords import KeyWordAnalysis
 
 redisConnection = None
 
@@ -34,7 +35,10 @@ def thread1(hash_id):
     app.logger.info(len(comments))
     app.logger.info(acumulate / len(comments))
 
-    keywords = ['f', 'world']
+    keyWord = KeyWordAnalysis()
+    keywords = keyWord.get_keywords(comments)
+    print(keywords)
+
     redisConnection.hset(hash_id, 'prediction', ((acumulate / len(comments)) * 100) / 2 )
     redisConnection.hset(hash_id, 'keywords', json.dumps(keywords))
     #df1 = pd.DataFrame({'comment': comments, 'score': score })
