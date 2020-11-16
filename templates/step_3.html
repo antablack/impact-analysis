@@ -1,0 +1,40 @@
+{% extends 'layout.html' %} {% from 'macros.html' import steps %} {% block body
+%} {{ steps('step_3') }}
+
+<style>
+  .loader {
+    border-top-color: #48bb78;
+    -webkit-animation: spinner 1.5s linear infinite;
+    animation: spinner 1.5s linear infinite;
+  }
+
+  @-webkit-keyframes spinner {
+    0% {
+      -webkit-transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+
+  @keyframes spinner {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>
+
+<div class="flex justify-center mt-6 p-6 h-32 flex-col">
+  <div class="flex items-center flex-col">
+    <div
+      class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32"
+    ></div>
+    <div class="mt-6"><span>Cargando ...</span></div>
+  </div>
+  <div></div>
+</div>
+
+{% endblock %}

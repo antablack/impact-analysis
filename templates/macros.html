@@ -1,0 +1,88 @@
+
+{% macro continue_btn(text, type) -%}
+
+<button class="border bg-green-500 text-white block rounded-sm font-bold py-4 px-6 ml-2 flex items-center" {{ 'type=post' if type == 'POST' else '' }}>
+    {{ text }}
+    <svg class="h-5 w-5 ml-2 fill-current" clasversion="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+         viewBox="-49 141 512 512" style="enable-background:new -49 141 512 512;" xml:space="preserve">
+    <path id="XMLID_11_" d="M-24,422h401.645l-72.822,72.822c-9.763,9.763-9.763,25.592,0,35.355c9.763,9.764,25.593,9.762,35.355,0
+        l115.5-115.5C460.366,409.989,463,403.63,463,397s-2.634-12.989-7.322-17.678l-115.5-115.5c-9.763-9.762-25.593-9.763-35.355,0
+        c-9.763,9.763-9.763,25.592,0,35.355l72.822,72.822H-24c-13.808,0-25,11.193-25,25S-37.808,422-24,422z"/>
+    </svg>
+</button>
+{%- endmacro %}
+
+{% macro steps(step) -%}
+<div class="w-full py-6">
+    <div class="flex justify-center">
+      <div class="w-1/4">
+        <div class="relative mb-2">
+          <div
+            class="w-10 h-10 mx-auto bg-green-500 rounded-full text-lg text-white flex items-center"
+          >
+            <span class="text-center text-white w-full"> 1 </span>
+          </div>
+        </div>
+
+        <div class="text-xs text-center md:text-base">
+          Extraer Comentarios
+        </div>
+      </div>
+
+      <div class="w-1/4">
+        <div class="relative mb-2">
+          <div
+            class="absolute flex align-center items-center align-middle content-center"
+            style="
+              width: calc(100% - 2.5rem - 1rem);
+              top: 50%;
+              transform: translate(-50%, -50%);
+            "
+          >
+            <div
+              class="w-full bg-gray-200 rounded items-center align-middle align-center flex-1"
+            >
+              <div class="w-0 py-1 {{ 'bg-green-300' if step == 'step_2' or step == 'step_3' else '' }}  rounded" style="width: 100%"></div>
+            </div>
+          </div>
+
+          <div
+            class="w-10 h-10 mx-auto {{ 'bg-green-500' if step == 'step_2' or step == 'step_3' else 'border-2 border-gray-200' }}  rounded-full text-lg text-white flex items-center"
+          >
+            <span class="text-center {{ 'text-white' if step == 'step_2' or step == 'step_3' else 'text-gray-600' }}  w-full"> 2 </span>
+          </div>
+        </div>
+
+        <div class="text-xs text-center md:text-base">Subir Comentarios</div>
+      </div>
+
+      <div class="w-1/4">
+        <div class="relative mb-2">
+          <div
+            class="absolute flex align-center items-center align-middle content-center"
+            style="
+              width: calc(100% - 2.5rem - 1rem);
+              top: 50%;
+              transform: translate(-50%, -50%);
+            "
+          >
+            <div
+              class="w-full bg-gray-200 rounded items-center align-middle align-center flex-1"
+            >
+              <div class="w-0 py-1 rounded {{ 'bg-green-300' if step == 'step_3' else '' }} " style="width: 100%"></div>
+            </div>
+          </div>
+
+          <div
+            class="w-10 h-10 mx-auto bg-white {{ 'bg-green-500' if step == 'step_3' else 'border-2 border-gray-200' }} rounded-full text-lg text-white flex items-center"
+          >
+            <span class="text-center {{ 'text-white' if step == 'step_3' else 'text-gray-600' }} w-full"> 3 </span>
+          </div>
+        </div>
+
+        <div class="text-xs text-center md:text-base">Análisis</div>
+      </div>
+    </div>
+  </div>
+
+{%- endmacro %}

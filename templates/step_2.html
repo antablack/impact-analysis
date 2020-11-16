@@ -1,0 +1,26 @@
+
+{% extends 'layout.html' %}
+{% from 'macros.html' import steps, continue_btn %}
+
+{% block body %}
+
+  {{ steps('step_2') }}
+
+  <form action="/step-2" method="POST" enctype="multipart/form-data">
+  <div class="flex justify-center p-6 flex-col">
+    <div class="flex justify-center">
+        <img class="w-64" src="/static/img/upload.svg"/>
+    </div>
+    <div>
+        <p class="text-center p-6" >
+            <input type="file" id="file" name="file"/>
+        </p>
+    </div>
+    <div class="flex justify-end mr-32">
+        <a href="/step-2">
+          {{continue_btn('Continuar', 'POST')}}
+        </a>
+      </div>
+  </div>
+</form>
+{% endblock %}
