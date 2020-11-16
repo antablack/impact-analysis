@@ -2,6 +2,17 @@ from flask import Flask, render_template, request, redirect
 from werkzeug.utils import secure_filename
 import os
 import uuid
+import pandas as pd
+import _thread
+import time
+
+def thread1(hash_id):
+    df = pd.read_excel('comments.xlsx', header=5)
+    comments = df['Comment']
+    print(comments[0])
+    time.sleep(5)
+
+
 
 app = Flask(__name__)
 
@@ -14,8 +25,13 @@ def step_2():
     if request.method == 'GET':
         return render_template('step_2.html')
     else:
+        hash_id = str(uuid.uuid4())
         f = request.files['file']
-        f.save(os.getcwd() + '/temp/' + str(uuid.uuid4()))
+        f.save(os.getcwd() + '/temp/' + hash_id)
+        try:
+            #_thread.start_new_thread( thread1, (hash_id, ))
+        except:
+            print("Error: unable to start threads", sys.exc_info()[0])
         return redirect("/step-3", code=302)
 
 @app.route('/step-3')
