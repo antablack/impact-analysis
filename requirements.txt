@@ -1,0 +1,7 @@
+flask
+pandas
+xlrd
+sentiment-analysis-spanish
+redis
+sklearn
+msgpack
