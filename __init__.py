@@ -17,7 +17,6 @@ def thread1(hash_id):
     comments = df['Comment']
     app.logger.info(comments[2])
     sentiment = sentiment_analysis.SentimentAnalysisSpanish()
-    #app.logger.info(sentiment.sentiment(comments[2]) * 100)
     time.sleep(5)
     acumulate = 0
     score = []
@@ -25,7 +24,6 @@ def thread1(hash_id):
         analysis = sentiment.sentiment(comment) * 100
         score.append(analysis)
         if analysis >= 60 : # positive
-            #app.logger.info(comment)
             acumulate += 2
         elif analysis >= 10 and analysis < 60: # neutro
             acumulate += 1
@@ -37,7 +35,6 @@ def thread1(hash_id):
 
     keyWord = KeyWordAnalysis()
     keywords = keyWord.get_keywords(comments)
-    print(keywords)
 
     redisConnection.hset(hash_id, 'prediction', ((acumulate / len(comments)) * 100) / 2 )
     redisConnection.hset(hash_id, 'keywords', json.dumps(keywords))

@@ -1,4 +1,4 @@
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 import re
 
 class KeyWordAnalysis:
@@ -18,15 +18,37 @@ class KeyWordAnalysis:
     def get_keywords(self, df_text):
         stop_words = self.get_stopwords()
 
-        df_text = map(lambda text: self.pre_process(text), df_text)
-        df_text = list(df_text)
+        df_text1 = map(lambda text: self.pre_process(text), df_text)
+        df_text1 = list(df_text1)
 
         cv = CountVectorizer(max_df=0.85, stop_words=stop_words, max_features=10000)
-        word_count_vector = cv.fit_transform(df_text)
+        word_count_vector = cv.fit_transform(df_text1)
 
-        words = list(cv.vocabulary_.keys())[:50]
-        return words
+        #words = list(cv.vocabulary_.keys())[:50]
 
+        tfidf_transformer = TfidfTransformer(smooth_idf=True, use_idf=True)
+        tfidf_transformer.fit(word_count_vector)
+
+        feature_names = cv.get_feature_names()
+        tf_idf_vector = tfidf_transformer.transform(cv.transform(df_text1))
+
+        sorted_items = self.sort_coo(tf_idf_vector.tocoo())
+
+        key_words = self.extract_top10_from_vector(feature_names, sorted_items)
+
+        return key_words
+
+    def sort_coo(self, coo_matrix):
+        tuples = zip(coo_matrix.col, coo_matrix.data)
+        return sorted(tuples, key=lambda x: (x[1], x[0]), reverse=True)
+    
+    def extract_top10_from_vector(self, feature_names, sorted_items): 
+        sorted_items = sorted_items[:50]
+        fature_vals = []
+        for idx, score in sorted_items:
+            fature_vals.append(feature_names[idx])
+            #fature_vals.append(round(score, 3)) #TODO Show a bar chart with the score
+        return fature_vals
 
 #df_text = [
 #    'El ONE PIECE es 100% real no feikEso me mato de risa jajajaja pero One Piece es muy triste y su guerra supera la de naruto XD gracias por subirlo',

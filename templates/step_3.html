@@ -48,7 +48,9 @@
     <h1 class="pt-6 text-xl">Análisis de Sentimientos</h1>
   </div>
   <div class="flex justify-center">
-    <canvas id="chart" class="w-64"></canvas>
+    <div style="width:50vw">
+      <canvas id="chart" class="w-64"></canvas>
+    </div>
   </div>
   <div class="flex justify-center">
     <h1 class="p-6 text-xl">Keywords</h1>
@@ -71,10 +73,6 @@
 </div>
 
 <script>
-
-
-
-
   const value = {{prediction}};
 
   var config = {
