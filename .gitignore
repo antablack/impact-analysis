@@ -130,3 +130,6 @@ dmypy.json
 
 /temp/*
 !/temp/temp
+
+/training/data/*
+/training/output/*
