@@ -6,7 +6,7 @@ import json
 
 FILES_DATA_DIRECTORY = './data'
 
-def export_csv(df):
+def export_csv(df, file='result'):
     data = {'Comment': df['Comment'], 
             'Sentiment': df['Sentiment'],
             'Sentiment_Mixed': df['Sentiment_Mixed'],
@@ -15,18 +15,21 @@ def export_csv(df):
             'Sentiment_Positive': df['Sentiment_Positive']
             }
     df = pd.DataFrame(data) 
-    df.to_csv('./output/result.csv')
+    df.to_csv('./output/'+file+'.csv')
     print('-------')
     print('Completed')
 
 
 def merge_data(files):
     #return pd.read_excel(FILES_DATA_DIRECTORY + '/' + files[1], header=5)
-    df_global = []
+    #df_global = []
     for file in files:
+        print('trabajando en el archivo ' + file)
         df = pd.read_excel(FILES_DATA_DIRECTORY + '/' + file, header=5)
-        df_global.append(df)
-    return pd.concat(df_global)
+        df = set_sentiment(df)
+        export_csv(df, file)
+        #df_global.append(df)
+    #return pd.concat(df_global)
 
 def set_sentiment(df):
     sentiment = []
@@ -42,9 +45,18 @@ def set_sentiment(df):
         print(str(i) + ' de ' + str(length))
         i += 1
         text = str(comment)
-        response =  comprehend.detect_sentiment(Text=text, LanguageCode='es') #json.dumps(comprehend.detect_sentiment(Text=text, LanguageCode='es'), sort_keys=True, indent=4)
-        sentiment.append(response['Sentiment'])
+        try:
+            response = comprehend.detect_sentiment(Text=text, LanguageCode='es') #json.dumps(comprehend.detect_sentiment(Text=text, LanguageCode='es'), sort_keys=True, indent=4)
+        except Exception as e:
+            print(str(e) + ' Error--->' + str(text))
+            sentiment.append('NONE')
+            sentiment_mixed.append('NONE')
+            sentiment_negative.append('NONE')
+            sentiment_neutral.append('NONE')
+            sentiment_positive.append('NONE')
+            continue
 
+        sentiment.append(response['Sentiment'])
         sentiment_mixed.append(response['SentimentScore']['Mixed'])
         sentiment_negative.append(response['SentimentScore']['Negative'])
         sentiment_neutral.append(response['SentimentScore']['Neutral'])
@@ -60,7 +72,5 @@ def set_sentiment(df):
 
 if __name__ == '__main__':
     onlyfiles = [f for f in listdir(FILES_DATA_DIRECTORY) if isfile(join(FILES_DATA_DIRECTORY, f))]
+    merge_data(onlyfiles)
     
-    data = merge_data(onlyfiles)
-    data = set_sentiment(data)
-    export_csv(data)
