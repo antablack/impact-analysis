@@ -36,7 +36,10 @@ class KeyWordAnalysis:
 
         key_words = self.extract_top10_from_vector(feature_names, sorted_items)
 
-        return key_words
+        res = []
+        [res.append(x) for x in key_words if x not in res]
+
+        return res
 
     def sort_coo(self, coo_matrix):
         tuples = zip(coo_matrix.col, coo_matrix.data)
